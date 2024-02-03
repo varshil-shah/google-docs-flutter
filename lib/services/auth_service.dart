@@ -110,4 +110,9 @@ class AuthService {
 
     return errorModel;
   }
+
+  void signOut() {
+    _googleSignIn.signOut();
+    _localStorageService.setToken('');
+  }
 }

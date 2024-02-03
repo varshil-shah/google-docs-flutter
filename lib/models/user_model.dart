@@ -29,7 +29,8 @@ class UserModel {
     return UserModel(
       email: map['email'] ?? '',
       name: map['name'] ?? '',
-      profilePic: map['profilePic'],
+      profilePic: map['profilePic'] ??
+          'https://ik.imagekit.io/varshilshah/users/default.jpg',
       uid: map['_id'] ?? '',
       token: map['token'] ?? '',
     );

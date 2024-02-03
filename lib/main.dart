@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_docs/models/error_model.dart';
-import 'package:google_docs/screens/home_screen.dart';
-import 'package:google_docs/screens/login_screen.dart';
+import 'package:google_docs/router.dart';
 import 'package:google_docs/services/auth_service.dart';
+import 'package:routemaster/routemaster.dart';
 
 void main() {
   runApp(
@@ -39,15 +39,22 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userProvider);
-
-    return MaterialApp(
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       title: 'Google Docs',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: user == null ? const LoginScreen() : const HomeScreen(),
+      routerDelegate: RoutemasterDelegate(routesBuilder: (context) {
+        final user = ref.watch(userProvider);
+        if (user != null && user.token.isNotEmpty) {
+          return loggedInRoute;
+        }
+
+        return loggedOutRoute;
+      }),
+      routeInformationParser: const RoutemasterParser(),
     );
   }
 }
