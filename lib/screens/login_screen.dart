@@ -20,6 +20,7 @@ class LoginScreen extends ConsumerWidget {
         ),
       );
     } else {
+      debugPrint(errorModel.error);
       sMessanger.showSnackBar(
         SnackBar(
           content: Text(errorModel.error!),
