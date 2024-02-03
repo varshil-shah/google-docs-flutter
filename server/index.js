@@ -12,7 +12,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const authRoutes = require("./routes/auth.route");
+const authRouter = require("./routes/auth.route");
+const documentRoutes = require("./routes/document.route");
 
 // Connect to MongoDB
 mongoose
@@ -26,7 +27,8 @@ mongoose
 
 app.use(morgan("dev"));
 
-app.use(authRoutes);
+app.use(authRouter);
+app.use(documentRoutes);
 
 app.use("*", (req, res) => {
   res.status(404).json({
