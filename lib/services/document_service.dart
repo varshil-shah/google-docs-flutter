@@ -53,4 +53,45 @@ class DocumentService {
 
     return errorModel;
   }
+
+  Future<ErrorModel> getDocuments(String token) async {
+    ErrorModel errorModel = ErrorModel(
+      error: 'Some unexpected error occured!',
+      data: null,
+    );
+    try {
+      final response = await _client.get(
+        Uri.parse('$host/docs/me'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': token,
+        },
+      );
+
+      switch (response.statusCode) {
+        case 200:
+          List<DocumentModel> documents = [];
+          for (int i = 0; i < jsonDecode(response.body).length; i++) {
+            documents.add(
+              DocumentModel.fromJson(
+                jsonEncode(
+                  jsonDecode(response.body)[i],
+                ),
+              ),
+            );
+          }
+          errorModel = ErrorModel(error: null, data: documents);
+          break;
+        default:
+          errorModel = ErrorModel(
+            error: response.body,
+            data: null,
+          );
+      }
+    } catch (error) {
+      errorModel = ErrorModel(error: error.toString(), data: null);
+    }
+
+    return errorModel;
+  }
 }

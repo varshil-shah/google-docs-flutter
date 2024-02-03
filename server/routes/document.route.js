@@ -23,4 +23,16 @@ router.post("/doc/create", auth, async (req, res) => {
   }
 });
 
+router.get("/docs/me", auth, async (req, res) => {
+  try {
+    const documents = await Document.find({ uid: req.user });
+    res.status(200).json(documents);
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+});
+
 module.exports = router;
