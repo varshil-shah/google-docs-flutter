@@ -1,12 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const cors = require("cors");
+const morgan = require("morgan");
 
 dotenv.config({
   path: "./.env",
 });
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 const authRoutes = require("./routes/auth.route");
@@ -21,7 +24,16 @@ mongoose
     console.log(err);
   });
 
+app.use(morgan("dev"));
+
 app.use(authRoutes);
+
+app.use("*", (req, res) => {
+  res.status(404).json({
+    status: "fail",
+    message: "Page not found",
+  });
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
