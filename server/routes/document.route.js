@@ -53,4 +53,16 @@ router.patch("/doc/title", auth, async (req, res) => {
   }
 });
 
+router.get("/doc/:id", auth, async (req, res) => {
+  try {
+    const document = await Document.findById(req.params.id);
+    res.status(200).json(document);
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+});
+
 module.exports = router;
