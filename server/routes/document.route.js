@@ -35,4 +35,22 @@ router.get("/docs/me", auth, async (req, res) => {
   }
 });
 
+router.patch("/doc/title", auth, async (req, res) => {
+  try {
+    const { id, title } = req.body;
+    const document = await Document.findByIdAndUpdate(
+      id,
+      { title },
+      { new: true }
+    );
+
+    res.status(200).json(document);
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+});
+
 module.exports = router;
