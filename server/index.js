@@ -11,7 +11,11 @@ dotenv.config({
 
 const app = express();
 const server = http.createServer(app);
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+  },
+});
 
 app.use(cors());
 app.use(express.json());
@@ -45,6 +49,10 @@ io.on("connection", (socket) => {
   socket.on("join", (documentId) => {
     socket.join(documentId);
     console.log("A user joined the document");
+  });
+
+  socket.on("typing", (data) => {
+    socket.broadcast.to(data.room).emit("changes", data);
   });
 });
 
