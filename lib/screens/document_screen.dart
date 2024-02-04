@@ -7,6 +7,7 @@ import 'package:google_docs/models/document_model.dart';
 import 'package:google_docs/models/error_model.dart';
 import 'package:google_docs/services/auth_service.dart';
 import 'package:google_docs/services/document_service.dart';
+import 'package:google_docs/services/socket_service.dart';
 
 class DocumentScreen extends ConsumerStatefulWidget {
   final String id;
@@ -25,10 +26,12 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
       TextEditingController(text: "Untitled document");
   final quill.QuillController _controller = quill.QuillController.basic();
   ErrorModel? errorModel;
+  SocketService socketService = SocketService();
 
   @override
   void initState() {
     super.initState();
+    socketService.joinRoom(widget.id);
     fetchDocumentData();
   }
 
