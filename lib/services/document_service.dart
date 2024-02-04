@@ -134,4 +134,34 @@ class DocumentService {
 
     return errorModel;
   }
+
+  Future<ErrorModel> getDocumentById(String token, String id) async {
+    ErrorModel errorModel = ErrorModel(
+      error: 'Some unexpected error occured!',
+      data: null,
+    );
+    try {
+      final response = await _client.get(
+        Uri.parse('$host/doc/$id'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': token,
+        },
+      );
+
+      switch (response.statusCode) {
+        case 200:
+          final document = DocumentModel.fromJson(response.body);
+          errorModel = ErrorModel(error: null, data: document);
+          break;
+        default:
+          throw Exception(
+              "This document doesn't exist!, please create a new one");
+      }
+    } catch (error) {
+      errorModel = ErrorModel(error: error.toString(), data: null);
+    }
+
+    return errorModel;
+  }
 }
