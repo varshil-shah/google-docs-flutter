@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_docs/colors.dart';
 import 'package:google_docs/services/auth_service.dart';
 import 'package:routemaster/routemaster.dart';
@@ -27,28 +28,43 @@ class LoginScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final Size size = MediaQuery.of(context).size;
+
     return Scaffold(
-      body: Center(
-        child: ElevatedButton.icon(
-          onPressed: () => signInWithGoogle(context, ref),
-          icon: Image.asset(
-            "assets/images/google-logo.png",
-            height: 20,
-          ),
-          label: const Text(
-            "Sign in with Google",
-            style: TextStyle(
-              color: kDarkGreyColor,
-              fontSize: 14,
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              "assets/images/signin.svg",
+              height: size.height * 0.4,
+              width: size.width * 0.4,
             ),
-          ),
-          style: ElevatedButton.styleFrom(
-            maximumSize: const Size(400, 50),
-            backgroundColor: kWhiteColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(3),
+            const SizedBox(height: 50),
+            ElevatedButton.icon(
+              onPressed: () => signInWithGoogle(context, ref),
+              icon: Image.asset(
+                "assets/images/google-logo.png",
+                height: 25,
+              ),
+              label: const Text(
+                "Sign in with Google",
+                style: TextStyle(
+                  color: kDarkGreyColor,
+                  fontSize: 16,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                maximumSize: const Size(500, 80),
+                backgroundColor: kWhiteColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(3),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

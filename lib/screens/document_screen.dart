@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_quill/quill_delta.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
@@ -27,7 +28,7 @@ class DocumentScreen extends ConsumerStatefulWidget {
 
 class _DocumentScreenState extends ConsumerState<DocumentScreen> {
   TextEditingController titleController =
-      TextEditingController(text: "Untitled document");
+      TextEditingController(text: "Untitled doc");
   quill.QuillController? _controller;
   ErrorModel? errorModel;
   SocketService socketService = SocketService();
@@ -110,28 +111,21 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: kWhiteColor,
-        title: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Row(children: [
-            Image.asset("assets/images/document.png", height: 30),
-            const SizedBox(width: 10),
-            IntrinsicWidth(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: size.width * 0.8),
-                child: TextField(
-                  controller: titleController,
-                  onSubmitted: (value) => updateTitle(ref, value),
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: kLightBlueColor),
-                    ),
-                    contentPadding: EdgeInsets.all(5),
-                  ),
+        title: IntrinsicWidth(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: size.width * 0.5),
+            child: TextField(
+              controller: titleController,
+              onSubmitted: (value) => updateTitle(ref, value),
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: kLightBlueColor),
                 ),
+                contentPadding: EdgeInsets.all(5),
               ),
-            )
-          ]),
+            ),
+          ),
         ),
         actions: [
           Padding(
@@ -141,11 +135,24 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
             ),
             child: ElevatedButton.icon(
               icon: const Icon(
-                Icons.lock,
+                Icons.person,
                 color: kWhiteColor,
                 size: 20,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Clipboard.setData(
+                  ClipboardData(text: widget.id),
+                ).then((value) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'Document Id copied!',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                });
+              },
               label: const Text(
                 'Share',
                 style: TextStyle(
@@ -176,6 +183,7 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
             quill.QuillToolbar.simple(
               configurations: quill.QuillSimpleToolbarConfigurations(
                 controller: _controller!,
+                multiRowsDisplay: false,
               ),
             ),
             const SizedBox(height: 10),
