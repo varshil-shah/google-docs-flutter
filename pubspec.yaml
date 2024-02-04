@@ -43,6 +43,7 @@ dependencies:
   socket_io_client: ^1.0.2
   skeletons: ^0.0.3
   flutter_svg: ^2.0.9
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
