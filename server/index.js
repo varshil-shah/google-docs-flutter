@@ -5,6 +5,8 @@ const cors = require("cors");
 const morgan = require("morgan");
 const http = require("http");
 
+const Document = require("./models/document.model");
+
 dotenv.config({
   path: "./.env",
 });
@@ -54,7 +56,17 @@ io.on("connection", (socket) => {
   socket.on("typing", (data) => {
     socket.broadcast.to(data.room).emit("changes", data);
   });
+
+  socket.on("save", (data) => {
+    saveData(data);
+  });
 });
+
+const saveData = async (data) => {
+  let document = await Document.findById(data.room);
+  document.content = data.delta;
+  document = await document.save();
+};
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {

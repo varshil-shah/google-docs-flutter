@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/quill_delta.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,6 +43,13 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
         _controller?.selection ?? const TextSelection.collapsed(offset: 0),
         quill.ChangeSource.remote,
       );
+    });
+
+    Timer.periodic(const Duration(seconds: 5), (timer) {
+      socketService.autoSave(<String, dynamic>{
+        'room': widget.id,
+        'delta': _controller?.document.toDelta(),
+      });
     });
   }
 

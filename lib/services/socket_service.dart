@@ -14,6 +14,10 @@ class SocketService {
     _socketClient.emit('typing', data);
   }
 
+  void autoSave(Map<String, dynamic> data) {
+    _socketClient.emit('save', data);
+  }
+
   void changeListener(Function(Map<String, dynamic>) func) {
     _socketClient.on('changes', (data) => func(data));
   }
