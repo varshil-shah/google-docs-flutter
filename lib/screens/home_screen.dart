@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_docs/colors.dart';
-import 'package:google_docs/screens/my_documents.dart';
+import 'package:google_docs/screens/my_documents_screen.dart';
+import 'package:google_docs/screens/share_screen.dart';
 import 'package:google_docs/services/auth_service.dart';
 import 'package:google_docs/services/document_service.dart';
 import 'package:routemaster/routemaster.dart';
@@ -42,6 +43,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   final List<Widget> _widgetOptions = <Widget>[
     const MyDocuments(),
+    const ShareScreen()
   ];
 
   @override
