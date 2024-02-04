@@ -94,4 +94,44 @@ class DocumentService {
 
     return errorModel;
   }
+
+  Future<ErrorModel> updateTitle({
+    required String token,
+    required String id,
+    required String title,
+  }) async {
+    ErrorModel errorModel = ErrorModel(
+      error: 'Some unexpected error occured!',
+      data: null,
+    );
+    try {
+      final response = await _client.patch(
+        Uri.parse('$host/doc/title'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': token,
+        },
+        body: jsonEncode({
+          'id': id,
+          'title': title,
+        }),
+      );
+
+      switch (response.statusCode) {
+        case 200:
+          final updatedDocument = DocumentModel.fromJson(response.body);
+          errorModel = ErrorModel(error: null, data: updatedDocument);
+          break;
+        default:
+          errorModel = ErrorModel(
+            error: response.body,
+            data: null,
+          );
+      }
+    } catch (error) {
+      errorModel = ErrorModel(error: error.toString(), data: null);
+    }
+
+    return errorModel;
+  }
 }
