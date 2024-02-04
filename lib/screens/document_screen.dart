@@ -46,7 +46,7 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
       );
     });
 
-    Timer.periodic(const Duration(seconds: 5), (timer) {
+    Timer.periodic(const Duration(seconds: 2), (timer) {
       socketService.autoSave(<String, dynamic>{
         'room': widget.id,
         'delta': _controller?.document.toDelta(),
