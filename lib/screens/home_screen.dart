@@ -49,49 +49,50 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Google Docs',
-            style: Theme.of(context).appBarTheme.titleTextStyle,
-          ),
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          actionsIconTheme: Theme.of(context).appBarTheme.actionsIconTheme,
-          actions: [
-            IconButton(
-              onPressed: () => signOut(ref),
-              icon: const Icon(
-                Icons.logout,
-              ),
-            ),
-          ],
+      appBar: AppBar(
+        title: Text(
+          'Google Docs',
+          style: Theme.of(context).appBarTheme.titleTextStyle,
         ),
-        body: _widgetOptions.elementAt(selectedIndex),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            createDocument(context, ref);
-          },
-          child: const Icon(
-            Icons.add,
-            color: kWhiteColor,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        actionsIconTheme: Theme.of(context).appBarTheme.actionsIconTheme,
+        actions: [
+          IconButton(
+            onPressed: () => signOut(ref),
+            icon: const Icon(
+              Icons.logout,
+            ),
           ),
+        ],
+      ),
+      body: _widgetOptions.elementAt(selectedIndex),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          createDocument(context, ref);
+        },
+        child: const Icon(
+          Icons.add,
+          color: kWhiteColor,
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: selectedIndex,
-          onTap: (index) {
-            setState(() {
-              selectedIndex = index;
-            });
-          },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'My files',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.share),
-              label: 'Shared files',
-            ),
-          ],
-        ));
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectedIndex,
+        onTap: (index) {
+          setState(() {
+            selectedIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'My files',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.share),
+            label: 'Shared files',
+          ),
+        ],
+      ),
+    );
   }
 }
